@@ -172,15 +172,35 @@ async function execute_python({ code, packages }) {
       // Show loading feedback in output
       pyodide.runPython(`print('<div class="pyodide-loading">Loading packages, please wait...</div>')`);
 
+      // FIX 1: Create Python helper functions for package reporting
+      pyodide.runPython(`
+        def report_package_success(pkg_name):
+            print(f'<span class="package-success">✓ Loaded package: {pkg_name}</span>')
+            
+        def report_package_error(pkg_name, error_msg):
+            print(f'<span class="package-error">⚠️ Failed to load package: {pkg_name} ({error_msg})</span>')
+      `);
+
       for (const packageName of packages) {
         try {
           // Use mapping if available
           const actualPackage = packageMappings[packageName] || packageName;
+
+          // Debug log to trace package loading
+          console.log("Loading package:", packageName, "mapped to:", actualPackage);
+
+          // Load the package
           await pyodide.loadPackage(actualPackage);
           loadedPackages.push(actualPackage);
-          pyodide.runPython(`print(f'<span class="package-success">✓ Loaded package: {actualPackage}</span>')`);
+
+          // FIX 2: Properly pass JavaScript variables to Python context
+          pyodide.globals.set("current_package", actualPackage);
+          pyodide.runPython(`report_package_success(current_package)`);
         } catch (e) {
-          pyodide.runPython(`print(f'<span class="package-error">⚠️ Failed to load package: {packageName} ({e.message})</span>')`);
+          // FIX 3: Properly handle errors with Python context variables
+          pyodide.globals.set("current_package", packageName);
+          pyodide.globals.set("error_message", e.message || "Unknown error");
+          pyodide.runPython(`report_package_error(current_package, error_message)`);
         }
       }
 
@@ -248,7 +268,11 @@ def memory_status():
 
       if (importCode) {
         pyodide.runPython(importCode);
-        pyodide.runPython(`print("<span style='color:#575;'>Auto-imported packages: ${loadedPackages.join(', ')}</span>")`);
+
+        // FIX 4: Use proper JavaScript string concatenation for package list
+        const packageListStr = loadedPackages.join(', ');
+        // Pass the JavaScript string directly to print
+        pyodide.runPython(`print('<span style="color:#575;">Auto-imported packages: ${packageListStr}</span>')`);
       }
     }
 
