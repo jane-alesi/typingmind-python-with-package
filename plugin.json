@@ -15,22 +15,22 @@
             "properties": {
                 "code": {
                     "type": "string",
-                    "description": "A valid Python code snippet to be executed in the Pyodide Python WASM runtime. Best practices:\n- Prefer single-line or concise multi-line code\n- Use simple, direct print statements\n- Avoid complex formatting or multiple descriptive prints\n- Prefer direct value printing\n- For multi-line code, use triple quotes to preserve newline characters\n- Use 'show_plot()' after plt commands to display matplotlib figures\n\nExample of recommended usage:\n```\nimport numpy as np\nprint(np.array([1, 2, 3]))\n```\n\nFor matplotlib:\n```\nimport matplotlib.pyplot as plt\nplt.plot([1, 2, 3])\nshow_plot()\n```\n\nNote: First executions in a session may require a brief warmup."
+                    "description": "A valid Python code snippet to be executed in the Pyodide Python WASM runtime. Best practices:\n- Prefer single-line or concise multi-line code\n- Use simple, direct print statements\n- Avoid complex formatting or multiple descriptive prints\n- Prefer direct value printing\n- For multi-line code, use triple quotes to preserve newline characters\n- Use 'show_plot()' after plt commands to display matplotlib figures\n\nExample of recommended usage:\n```\nimport numpy as np\nprint(np.array([1, 2, 3]))\n```\n\nFor matplotlib:\n```\nimport matplotlib.pyplot as plt\nplt.plot([1, 2, 3])\nshow_plot(dpi=120, figsize=(10, 6))  # Optional parameters\n```\n\nFor pandas:\n```\nimport pandas as pd\ndf = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]})\nprint(df)\n```\n\nNote: First executions in a session may require a brief warmup."
                 },
                 "packages": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "A list of Python packages to load before executing the code. Common options include: 'numpy', 'pandas', 'matplotlib', 'scipy', 'scikit-learn'. Can use shorter aliases like 'np' for 'numpy' or 'pd' for 'pandas'."
+                    "description": "A list of Python packages to load before executing the code. Common options include: 'numpy', 'pandas', 'matplotlib', 'scipy', 'scikit-learn', 'sympy'. Can use shorter aliases like 'np' for 'numpy', 'pd' for 'pandas', 'plt' for 'matplotlib', 'sklearn' for 'scikit-learn'."
                 }
             }
         },
-        "description": "Execute a Python code snippet in a secure browser-based Python runtime (Pyodide v0.27.4). Enhancements include:\n- Better error handling with suggestions\n- Matplotlib visualization support\n- Automatic package imports\n- Support for common package aliases\n\nProvide the list of packages needed in the `packages` parameter. Common packages: numpy, pandas, matplotlib, scipy, scikit-learn."
+        "description": "Execute Python code in a secure browser-based Python runtime (Pyodide v0.27.4) with rich output formatting. Features include:\n- Interactive data visualization with Matplotlib\n- Data analysis with Pandas, NumPy, and SciPy\n- Smart error handling with suggestions\n- Common package aliases (np, pd, plt, sklearn)\n- Memory monitoring with memory_status()\n\nFor Matplotlib visualization, use show_plot() with optional parameters like dpi, format, and figsize."
     },
     "outputType": "respond_to_ai",
     "userSettings": null,
-    "overviewMarkdown": "Enhanced Python Interpreter allows the AI assistant to run Python code in your browser with improved package support, better error handling, and automatic visualization of data.",
+    "overviewMarkdown": "Enhanced Python Interpreter allows the AI assistant to run Python code in your browser with improved package support, better error handling, and automatic visualization of data. Supports NumPy, Pandas, Matplotlib, SciPy, and other scientific packages.",
     "authenticationType": "AUTH_TYPE_NONE",
     "implementationType": "javascript",
     "iconURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png",
