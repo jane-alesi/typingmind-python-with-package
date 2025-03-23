@@ -19,9 +19,10 @@ async function execute_python({ code, packages }) {
   // Browser compatibility check
   function checkBrowserCompatibility() {
     const ua = navigator.userAgent;
-    if (/Chrome\/8[9-0]\./.test(ua)) {
-      return "Warning: Chrome 89-90 has known WebAssembly bugs affecting NumPy. Consider updating your browser.";
+    if (/Chrome\/89\./.test(ua) || /Chrome\/90\./.test(ua)) {
+      warning = "Warning: Chrome 89-90 has known WebAssembly bugs affecting NumPy. Consider updating your browser.";
     }
+
     return null;
   }
 
